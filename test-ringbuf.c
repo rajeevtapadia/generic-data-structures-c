@@ -1,12 +1,12 @@
 #define RINGBUF_IMPLEMENTATION
-#include "ringbuf-void-ptr.h"
+#include "ringbuf.h"
 #include <stdio.h>
 
 void test_stress() {
   struct RingBuf rb = ringbuf_alloc(sizeof(int));
 
   int counter = 0;
-  for (int i = 0; i < 10000; i++) {
+  for (int i = 0; i < 100000; i++) {
     if (i % 3 == 0 && rb.size > 0) {
       ringbuf_pop(&rb, NULL);
     } else {
@@ -30,10 +30,7 @@ void test_trigger_resize() {
   printf("ringbuf dump\n");
   printf("out: %d, in:%d, size: %d, cap: %d\n", rb.out, rb.in, rb.size,
          rb.capacity);
-  ringbuf_dump(&rb);
-  for (int i = 0; i < rb.size; i++) {
-    printf("%d ", *((int *)(rb.items[i])));
-  }
+  // ringbuf_dump(&rb);
   printf("\n");
 
   for (int i = 0; i < 5; i++) {
